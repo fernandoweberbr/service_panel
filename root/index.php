@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=yes">
   <meta name="description" content="">
   <meta name="author" content="Fernando Weber">
-  <title>SERVICE EFFECTIVE</title>
+  <title>CONTROLE SERVIÇOS</title>
   <!-- Bootstrap core CSS-->
   <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
   <!-- Custom fonts for this template-->
@@ -23,29 +23,24 @@
   </style>
 </head>
 <?php
-//error_reporting(0);
-//$GLOBALS['$xml_global']=$xml_filesimple;
-//$xml_file=simplexml_load_file("http://192.168.1.7:8091/API/D/1.0/1ACB8494B500241130775AE530523063/Producao/DevolverOrdensProducao/") or die("Error: Cannot create objec1t");
-//$GLOBALS['$xml_global']=$xml_file;
-include_once("calcula_datas.php");
-include_once("./mysqlreflection-master/mysqlreflection.config.php");
-//$cnt = 0;
-$array_of_items=array();
-$conexao = mysql_connect(DBHOST,DBUSER,DBPASSWORD);  
-mysql_select_db(DBNAME); 
-$squery = "SELECT setor.setor_alias,setor.id FROM setor WHERE setor.habilita = 1 GROUP BY setor.setor_alias ";
-$result = mysql_query($squery) or die(mysql_error());
-while($dados = mysql_fetch_array($result))
-{
-    array_push($array_of_items,$dados);
-}  
-mysql_free_result ( $result );  
-
-
-
-//$hourly = EvPeriodic(0, 10, NULL, function () {echo  "<script>alert('10 segundos!);</script>";});
-
-
+    //error_reporting(0);
+    //$GLOBALS['$xml_global']=$xml_filesimple;
+    //$xml_file=simplexml_load_file("http://192.168.1.7:8091/API/D/1.0/1ACB8494B500241130775AE530523063/Producao/DevolverOrdensProducao/") or die("Error: Cannot create objec1t");
+    //$GLOBALS['$xml_global']=$xml_file;
+    include_once("calcula_datas.php");
+    include_once("./mysqlreflection-master/mysqlreflection.config.php");
+    //$cnt = 0;
+    $array_of_items=array();
+    $conexao = mysql_connect(DBHOST,DBUSER,DBPASSWORD);  
+    mysql_select_db(DBNAME); 
+    $squery = "SELECT setor.setor_alias,setor.id FROM setor WHERE setor.habilita = 1 OR setor.habilita =2 GROUP BY setor.setor_alias ";
+    $result = mysql_query($squery) or die(mysql_error());
+    while($dados = mysql_fetch_array($result))
+    {
+        array_push($array_of_items,$dados);
+    }  
+    mysql_free_result ( $result );  
+    //$hourly = EvPeriodic(0, 10, NULL, function () {echo  "<script>alert('10 segundos!);</script>";});
 ?>
 
     <body id="page-top">

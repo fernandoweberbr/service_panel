@@ -1,5 +1,7 @@
 ﻿<?php
 
+include_once("./mysqlreflection-master/mysqlreflection.config.php");
+
 function dataPascoa($ano=false, $form="d/m/Y") {
 	$ano=$ano?$ano:date("Y");
 	if ($ano<1583) { 
@@ -184,14 +186,24 @@ function somar_dias_uteis($str_data,$int_qtd_dias_somar,$feriados) {
 
 }
 
-$servidor = "localhost"; 
-$usuario = "root"; 
-$senha = "usbw"; 
-$banco = "effective"; 
+$servidor = DBHOST; 
+$usuario = DBUSER; 
+$senha = DBPASSWORD; 
+$banco = DBNAME; 
+
 $conexao = mysql_connect($servidor,$usuario,$senha);  
-mysql_select_db($banco); 
+		mysql_select_db($banco); 
+		$Consulta = $_GET['consulta'];
+		$squery = " SELECT setor.habilita AS habilita_nivel FROM setor WHERE setor.id = ".  $Consulta . "";  
+		$result_habilita = mysql_query($squery) or die(mysql_error()); 
+		while($results_h = mysql_fetch_array($result_habilita))
+		{
+			$setor_nivel = $results_h['habilita_nivel'];
+			//print($setor_nivel);
+		}
         $Consulta = $_GET['consulta'];
-        if($Consulta=='3' || $Consulta=='7'){
+		if($result_habilita == 2)
+		{
 		$squery = " SELECT usuario.usuario_alias AS user_alias, atividade.ordem AS num_ordem, 
                     atividade.data_inicio AS d_data_inicio, 
                     atividade.realizada, atividade.finalizada,
@@ -214,9 +226,9 @@ mysql_select_db($banco);
 				  	 		  GROUP BY atividade.fk_usuario ";
 			
 			$dateshow=date("d-m-Y", time());
-			echo '<h4>';
-			print($dateshow);
-			echo '</h4><span class=\"glyphicon glyphicon-edit\"></span>';
+			//echo '<h4>';
+			//print($dateshow);
+			//echo '</h4><span class=\"glyphicon glyphicon-edit\"></span>';
 			print('<div class="table-condensed row justify-content-md-center ">');
 			print('<table class="table-condensed table-bordered " id="dataTable" width="100%" cellspacing="0" padding="0"> ');
 			print('<thead>');
@@ -237,9 +249,9 @@ mysql_select_db($banco);
 					$user_id = $users['id_users'];
 					//print('id='.$users['id_users'].',');
 					$Limit = "LIMIT 0,5";
-					if($Consulta=='5' || $Consulta=='6'){
-						$Limit = "LIMIT 0,20";
-					}					
+					//if($Consulta=='5' || $Consulta=='6'){
+					//	$Limit = "LIMIT 0,20";
+					//}					
 
 					$squery = " SELECT 	usuario.usuario_alias AS user_alias, 
 					atividade.ordem AS num_ordem, 
@@ -326,7 +338,7 @@ while($dados = mysql_fetch_array($result))
             print('<td><text class="text-light" style="font-size: 1.5vw">'.$dados['num_ordem'].'</text></td>');
 			print('<td><text class="text-light" style="font-size: 1.5vw">'.$dados['at_descricao'].'</text></td>');
 			//print('<td><h0><p class="text-white">'.$dados['alias_prioridade'].'</p></h0></td>');
-			if($Consulta=='3')
+			if($result_habilita == 2)
 			{
 				if(strtotime($dados['d_data_inicio'])>0)
 				{
@@ -354,7 +366,7 @@ while($dados = mysql_fetch_array($result))
 					}
 				}
 			} else {
-				if($Consulta=='7')
+				if($result_habilita == 3) // Permutas
 				{
 					if(strtotime($dados['d_data_inicio'])>0)
 					{
@@ -413,7 +425,3 @@ print('</tbody>');
 print('</div>');
 print('</table>');
 mysql_free_result ( $result );
-?>
-
-
-

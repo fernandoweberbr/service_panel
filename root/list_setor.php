@@ -6,7 +6,7 @@ $conexao = mysql_connect(DBHOST,DBUSER,DBPASSWORD);
 mysql_select_db(DBNAME); 
 
 $squery = "SELECT setor.setor_alias,setor.id FROM setor 
-WHERE habilita = 1 
+WHERE habilita = 1 OR habilita = 2 OR habilita = 3
 GROUP BY setor.setor_alias";
 
 $result = mysql_query($squery) or die(mysql_error()); 
@@ -18,7 +18,6 @@ $dateshow=date("d-m-Y", time());
 
 foreach ( $array_of_items as $item_value )
 {
-    
 	if($cnt==0){
         print_r('<div class="carousel-item active">');
     } else {

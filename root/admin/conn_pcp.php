@@ -1,10 +1,13 @@
 <?php
+
+include_once("../mysqlreflection-master/mysqlreflection.config.php");
+
 Class dbObj{
 	/* Database connection start */
-	var $servername = "localhost";
-	var $username = "root";
-	var $password = "usbw";
-	var $dbname = "pcp";
+	var $servername = DBHOST;
+	var $username = DBUSER;
+	var $password = DBPASSWORD;
+	var $dbname = DBNAME;
 	var $conn;
 	function getConnstring() {
 		$con = mysqli_connect($this->servername, $this->username, $this->password, $this->dbname) or die("Connection failed: " . mysqli_connect_error());

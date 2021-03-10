@@ -2,8 +2,8 @@
 
 include_once("../mysqlreflection-master/mysqlreflection.config.php");
 
-define("XML_FILE_ORDENS ","ordem.xml");
-define("XML_FILE_PEDIDOS","pedidos.xml");
+//define("XML_FILE_ORDENS ","ordem.xml");
+//define("XML_FILE_PEDIDOS","pedidos.xml");
 
 Class dbObj{
 	/* Database connection start */

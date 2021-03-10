@@ -1,5 +1,6 @@
 <?php
-include_once("../mysqlreflection-master/beans/BeanAtividade.php");
+include_once("../mysqlreflection-master/mysqlreflection.config.php");
+//include_once("../mysqlreflection-master/beans/BeanAtividade.php");
 $cnt = 0;
 $array_of_items=array();
 $conexao = mysql_connect(DBHOST,DBUSER,DBPASSWORD);  

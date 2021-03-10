@@ -6,7 +6,7 @@
 define("DBHOST","localhost");
 define("DBUSER","root");
 define("DBPASSWORD","usbw");
-define("DBNAME","effective");
+define("DBNAME","service");
 define('DBPORT', '3306');
 
 /**
