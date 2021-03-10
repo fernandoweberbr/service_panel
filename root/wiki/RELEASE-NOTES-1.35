@@ -1,0 +1,256 @@
+= MediaWiki 1.35 =
+
+== MediaWiki 1.35.0-PRERELEASE ==
+
+THIS IS NOT A RELEASE YET
+
+MediaWiki 1.35 is an alpha-quality development branch, and is not recommended
+for use in production.
+
+== Upgrading notes for 1.35 ==
+1.35 has several database changes since 1.34, and will not work without schema
+updates. Note that due to changes to some very large tables like the revision
+table, the schema update may take quite long (minutes on a medium sized site,
+many hours on a large site).
+
+Don't forget to always back up your database before upgrading!
+
+See the file UPGRADE for more detailed upgrade instructions, including
+important information when upgrading from versions prior to 1.11.
+
+Some specific notes for MediaWiki 1.35 upgrades are below:
+
+* …
+
+For notes on 1.34.x and older releases, see HISTORY.
+
+=== Configuration changes for system administrators in 1.35 ===
+
+…
+
+==== New configuration ====
+* $wgDiffEngine can be used to specify the difference engine to use, rather
+  than choosing the first of $wgExternalDiffEngine, wikidiff2, or php that
+  is usable.
+* $wgSearchMatchRedirectPreference – This configuration setting controls whether
+  users can set a new preference, search-match-redirect, which decides if search
+  should redirect them to exact matches is available. By default, this is set to
+  false, which maintains the previous behaviour without preference bloat. Change
+  your site's default by setting $wgDefaultUserOptions['search-match-redirect'].
+* Per-user concurrency in SpecialContributions can now be limited by setting
+  $wgPoolCounterConf['SpecialContributions'] appropriately.
+* …
+
+==== Changed configuration ====
+* $wgResourceLoaderMaxage (T235314) - This configuration array controls the
+  max-age for HTTP caching through the Cache-Control header. It has uses the
+  "versioned" key for urls that do have a version parameter, and the
+  "unversioned" key for urls without a version parameter. The sub keys for
+  "client" and "server" are no longer supported in MediaWiki 1.35.
+* …
+
+==== Removed configuration ====
+* $wgSysopEmailBans — This setting, deprecated in 1.34, was removed. To let
+  sysops block email access, use $wgGroupPermissions['sysop']['blockemail'].
+* $wgDBWindowsAuthentication — This setting had no effect anymore after support
+  for SQL Server was removed in 1.34. (T230418)
+* …
+
+
+=== New user-facing features in 1.35 ===
+* …
+
+
+=== New developer features in 1.35 ===
+* If CSP is enabled, extensions can now add additional sources using the
+  ContentSecurityPolicy::addDefaultSource, ::addStyleSrc and ::addScriptSrc
+  methods (e.g. $context->getOutput()->getCSP()->addDefaultSrc( 'example.com' ))
+* …
+
+=== External library changes in 1.35 ===
+* …
+
+==== New external libraries ====
+* Added doctrine/dbal 2.9.3 (dev-only).
+* …
+
+==== Changed external libraries ====
+* symfony/yaml was upgraded from 3.4.28 to 4.3.4
+* pear/mail_mime was upgraded from 1.10.2 to 1.10.4
+* wikimedia/less.php was upgrade from 1.8.0 to 1.8.2
+* Updated nikic/php-parser from 3.1.5 to 4.2.4 (dev-only).
+* Updated jQuery from v3.3.1 to v3.4.1.
+* Updated jQuery Migrate from v3.0.1 to v3.1.0.
+* Updated jakub-onderka/php-console-highlighter from v0.3.2 to v0.4 (dev-only).
+* Updated wikimedia/assert from 0.2.2 to 0.4.0.
+* …
+
+==== Removed external libraries ====
+* …
+
+=== Bug fixes in 1.35 ===
+* …
+
+=== Action API changes in 1.35 ===
+* …
+
+=== Action API internal changes in 1.35 ===
+* …
+
+=== Languages updated in 1.35 ===
+MediaWiki supports over 350 languages. Many localisations are updated regularly.
+Below only new and removed languages are listed, as well as changes to languages
+because of Phabricator reports.
+
+* …
+
+=== Breaking changes in 1.35 ===
+* ResourceLoader::getLessVars(), deprecated in 1.32, was removed.
+  Use ResourceLoaderModule::getLessVars() instead.
+* The jquery.tabIndex module, deprecated in 1.34, has been removed.
+* The mediawiki.RegExp module alias, deprecated in 1.34, was removed.
+  Use the mediawiki.util module instead.
+* The easy-deflate.inflate module, unused since 1.32, was removed.
+* The easy-deflate.deflate module was removed. Use the mediawiki.deflate
+  module instead.
+* The internal variable $constructorOptions for the Parser & SpecialPageFactory,
+  exposed only for integration purposes, are now each replaced by a const called
+  CONSTRUCTOR_OPTIONS. This was a breaking change made without deprecation.
+* ObjectCache::getWANInstance, deprecated in 1.34, was removed.
+  Use MediaWikiServices::getMainWANObjectCache instead.
+* ObjectCache::newWANCacheFromParams, deprecated in 1.34, was removed.
+  Construct WANObjectCache directly instead, or use MediaWikiServices.
+* (T231366) The ProfilerOutputDb class and profileinfo.php entry point,
+  deprecated in 1.34, was removed.
+* ApiQueryUserInfo::getBlockInfo, deprecated in 1.34, was removed. Use
+  ApiBlockInfoTrait::getBlockDetails instead.
+* Password::equals(), deprecated in 1.33, was removed. Use Password::verify().
+* QuickTemplate::setRef(), deprecated in 1.31, was removed. Use set().
+* The mediawiki.ui.text module, deprecated in 1.28 and unused, was removed.
+* AbstractBlock::mReason, deprecated in 1.34, is no longer public.
+* The GetBlockedStatus, deprecated in 1.34, has been removed. Instead, use the
+  GetUserBlock hook.
+* Parser::disableCache(), deprecated in 1.28, has been removed.
+* Parser::serializeHalfParsedText() and the helper functions
+  Parser::unserializeHalfParsedText(), Parser::isValidHalfParsedText(),
+  StripState::getSubState() and StripState::merge(), deprecated in 1.31, have
+  been removed. The helper functions LinkHolderArray::mergeForeign() and
+  LinkHolderArray::getSubArray() were also removed.
+* Parser::getConverterLanguage(), deprecated in 1.32, was removed. Use
+  Parser::getTargetLanguage() instead.
+* Parser::getTitle() will throw a TypeError if Parser::$mTitle is
+  uninitialized.  This was deprecated in 1.34.
+* A number of public methods of Parser were exposed only for
+  historical reasons.  They were deprecated in 1.34 and have now been
+  made private or removed: doMagicLinks, doDoubleUnderscore,
+  doHeadings, doAllQuotes, replaceExternalLinks, replaceInternalLinks,
+  replaceInternalLinks2, getVariableValue, initialiseVariables,
+  formatHeadings, testPst, testPreprocess, testSrvus,
+  areSubpagesAllowed, maybeDoSubpageLink, splitWhitespace,
+  createAssocArgs, armorLinks, makeKnownLinkHolder, getImageParams,
+  parseLinkParameter, stripAltText, replaceLinkHoldersText.
+* MediaWikiTestCase::prepareServices(), deprecated in 1.32, has been removed
+* …
+
+=== Deprecations in 1.35 ===
+* The PHPUnit4And6Compat class, used to provide compatibility with PHPUnit 4, is
+  now deprecated. MediaWiki support for PHPUnit 4 ended with the removal of HHVM
+  support.
+* Revision::getRevisionText(), deprecated in 1.32, now emits deprecation alerts.
+* LockManagerGroup::getDefault() and LockManagerGroup::getAny() are deprecated.
+  They seem to be unused. Just use get() directly, and catch any exception.
+* AbstractBlock::getPermissionsError and AbstractBlock::getBlockErrorParams are
+  deprecated. Use BlockErrorFormatter::getMessage instead.
+* The following Language methods are deprecated: getFallbackFor,
+  getFallbacksFor, getFallbacksIncludingSiteLanguage. Use the corresponding new
+  methods on the LanguageFallback class: getFirst, getAll, and
+  getAllIncludingSiteLanguage.
+* FileJournal::factory is deprecated. Use the constructor directly instead.
+* AbstractBlock methods setBlocker(), getBlocker() are deprecated and will
+  become internal implementation of DatabaseBlock.
+* Title::countRevisionsBetween has been deprecated and moved into RevisionStore.
+* FileBackendGroup::singleton() is deprecated. Use MediaWikiServices instead.
+* FileBackendGroup::destroySingleton() is deprecated. Test frameworks should
+  instead reset MediaWikiServices between test runs.
+  (MediaWikiIntegrationTestCase does this automatically.)
+* MediaWikiIntegrationTest::setContentLang() has been deprecated. Use
+  setMwGlobals( 'wgLanguageCode', 'xxx' ) to set a different site language
+  code, or setService( 'ContentLanguage', $myObj ) to set a specific Language
+  object. Service resets and $wgContLang will be handled automatically.
+* AbstractBlock::getReason is deprecated, since reasons are actually stored as
+  CommentStoreComments, and getReason returns a string with no caller control
+  over language or formatting. Instead use AbstractBlock::getReasonComment,
+  which returns the CommentStoreComment.
+* The global function wfGetRusage() is deprecated and will now always call the
+  getrusage() function without checking for its existence.
+* The properties User::mBlock, User::mBlockedby and User::mHideName are
+  deprecated. Instead, use User::getBlock to get the block, then use
+  AbstractBlock::getByName or AbstractBlock::getHideName.Use the GetUserBlock
+  hook to set, unset or modify a block, including hiding or unhiding a user.
+* Language::factory() and Language::getParentLanguage() are deprecated, and so
+  is directly calling the Language constructor. Use the new LanguageFactory
+  class instead.
+* Language::classFromCode() is deprecated. There is no reason it should be used
+  outside the Language class itself.
+* Language::clearCaches() is deprecated. Instead, reset all services and set
+  Language::$mLangObjCache = [].
+* Language::$mLangObjCache is deprecated and should be removed in 1.36. Use
+  MediaWikiServices instead to get a LanguageFactory.
+* Language::getMessagesFor(), getMessageFor(), and getMessageKeysFor() are
+  deprecated. Use LocalisationCache's getItem(), getSubitem(), and
+  getSubitemList() methods directly.
+* OutputPage::getCSPNonce() is deprecated, use OutputPage::getCSP()->getNonce()
+  instead.
+* Skin::makeI18nUrl() and makeNSUrl() have been deprecated, no longer used.
+* Title::countAuthorsBetween and Title::getAuthorsBetween have been deprecated.
+  Use respective methods in RevisionStore instead.
+* Remove deprecated SkinCopyrightFooter &$forContent parameter
+* As part of dropping security support for IE 6 and IE 7,
+  WebRequest::checkUrlExtension() has been deprecated, and now always returns
+  true.
+* …
+
+=== Other changes in 1.35 ===
+* …
+
+== Compatibility ==
+MediaWiki 1.35 requires PHP 7.2.9 or later, and the following PHP extensions:
+
+* ctype
+* dom
+* fileinfo
+* iconv
+* json
+* mbstring
+* xml
+
+MySQL/MariaDB is the recommended DBMS. PostgreSQL or SQLite can also be used,
+but support for them is somewhat less mature.
+
+The supported versions are:
+
+* MySQL 5.5.8 or later
+* PostgreSQL 9.2 or later
+* SQLite 3.8.0 or later
+
+== Online documentation ==
+Documentation for both end-users and site administrators is available on
+MediaWiki.org, and is covered under the GNU Free Documentation License (except
+for pages that explicitly state that their contents are in the public domain):
+
+       https://www.mediawiki.org/wiki/Special:MyLanguage/Documentation
+
+== Mailing list ==
+A mailing list is available for MediaWiki user support and discussion:
+
+       https://lists.wikimedia.org/mailman/listinfo/mediawiki-l
+
+A low-traffic announcements-only list is also available:
+
+       https://lists.wikimedia.org/mailman/listinfo/mediawiki-announce
+
+It's highly recommended that you sign up for one of these lists if you're
+going to run a public MediaWiki, so you can be notified of security fixes.
+
+== IRC help ==
+There's usually someone online in #mediawiki on irc.freenode.net.
